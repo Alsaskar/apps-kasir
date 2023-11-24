@@ -74,6 +74,7 @@ class Karyawan extends CI_Controller {
 		$data['title'] = "Tambah Karyawan";
 		$data['getUser'] = $this->AuthModel->getDataLoggedIn($_SESSION['id_user']);
 
+		// jika bukan owner yang login
 		if($data['getUser']->role != 'owner')
 			redirect('dashboard');
 
@@ -96,7 +97,6 @@ class Karyawan extends CI_Controller {
 		$this->form_validation->set_rules('phoneNumber', '', 'required', array(
 			'required' => 'Tidak boleh kosong',
 		));
-
 
 		if($this->form_validation->run()){
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
