@@ -31,24 +31,23 @@ if (isset($message)) {
                     <div>- Tanda silang merah (<font color="red"><i class="fas fa-times"></i></font>) disebelah kiri berarti service dibatalkan</div>
                   </div>
 
-                  <table id="table" class="table text-center table-bordered table-striped">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>No</th>
-                        <th>Tgl Masuk</th>
-                        <th>Tgl Pengambilan</th>
-                        <th>Nama Customer</th>
-                        <th>Tipe HP</th>
-                        <th>Kerusakkan</th>
-                        <th>Harga Service</th>
-                        <th>Opsi</th>
-                      </tr>
-                    </thead>
-                    <tbody id="showdata" class="text-center"></tbody>
-                  </table>
+                    <table id="table" class="table text-center table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th>No</th>
+                          <th>No Transaksi</th>
+                          <th>Tanggal Transaksi</th>
+                          <th>Cashier</th>
+                          <th>Total Biaya</th>
+                          <th>Diskon</th>
+                          <th>Status</th>
+                          <th>Opsi</th>
+                        </tr>
+                      </thead>
+                      <tbody id="showdata" class="text-center"></tbody>
+                    </table>
+                  </div>
                   
-              </div>
           </div>
 
 	    	</div>
@@ -59,22 +58,22 @@ if (isset($message)) {
 <script src="<?= base_url('assets/library/datatables/js/jquery.dataTables.min.js') ?>"></script>
 <script src="<?php echo base_url('assets/library/datatables/js/dataTables.min.js') ?>"></script>
 <script type="text/javascript">
-	$('#table').DataTable({
+$('#table').DataTable({
 
-		"processing": true,
-		"serverSide": true,
-		"order": [],
-		"ajax": {
-			"url": "<?php echo site_url('Nota/listApi') ?>",
-			"type": "POST"
-		},
+"processing": true,
+"serverSide": true,
+"order": [],
+"ajax": {
+  "url": "<?php echo site_url('Kasir/listApi') ?>",
+  "type": "POST"
+},
 
-		"columnDefs": [
-			{
-				"targets": [0],
-				"ordertable": false
-			}
-		]
+"columnDefs": [
+  {
+    "targets": [0],
+    "ordertable": false
+  }
+]
 
-	});
+});
 </script>

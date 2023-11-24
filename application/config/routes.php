@@ -20,6 +20,7 @@ $route['karyawan/list'] = 'Karyawan/list';
 $route['karyawan/edit/(:num)'] = 'Karyawan/edit/$1';
 $route['karyawan/delete/(:num)'] = 'Karyawan/delete/$1';
 $route['karyawan/deletedata/(:num)'] = 'Karyawan/deleteData/$1';
+$route['karyawan/searchTransaksi'] = 'Karyawan/searchTransaksi';
 
 //barang
 $route['barang/daftar-barang'] = 'Barang';
@@ -37,6 +38,7 @@ $route['owner/list'] = 'Owner/list';
 $route['kasir/add'] = 'Kasir/tambah';
 $route['kasir/delete-cache/(:num)'] = 'Kasir/deleteCache/$1';
 $route['kasir/detail-transaksi/(:any)'] = 'Kasir/detailTransaksi/$1';
+$route['kasir/list'] = 'Kasir/list';
 
 // Teknisi
 $route['nota/add'] = 'Nota/add';

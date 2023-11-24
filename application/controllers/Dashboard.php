@@ -5,7 +5,7 @@ class Dashboard extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->model(['AuthModel', 'UserModel','KaryawanModel', 'OwnerModel', 'NotaModel']);
+		$this->load->model(['AuthModel', 'UserModel','KaryawanModel', 'OwnerModel', 'NotaModel','KasirModel']);
 
 		// jika belum login, tdk bisa kesini
 		if (!isset($_SESSION['logged_in'])) {
@@ -37,6 +37,13 @@ class Dashboard extends CI_Controller {
 			$data['serviceBatal'] = $this->NotaModel->countServiceByStatus('batal', $data['getKaryawan']->id);
 			$data['serviceSelesai'] = $this->NotaModel->countServiceByStatus('selesai', $data['getKaryawan']->id);
 
+			// data transaksi
+			$data['totalTransaksi'] = $this->KasirModel->countAllTransasction();
+			$data['totalTransaksiToday'] = $this->KasirModel->countTransactionByDate();
+			$data['list'] = $this->KasirModel->showTransaction();
+			$data['date1'] = $this->KasirModel->getDate('min');
+			$data['date2'] = $this->KasirModel->getDate('max');
+			$data['tanggal'] = date('Y-m-d');
 			$data['sidebar'] = $this->load->view('templates/dashboard/sidebarKaryawan', $data, true);
 			$this->load->view('pages/dashboard/karyawan', $data);
 

@@ -280,5 +280,43 @@ class Karyawan extends CI_Controller {
 
 	}
 
+	public function searchTransaksi(){
+        $key = $this->input->post('key');
+		$start = date('Y-m-d', strtotime(str_replace('-', '/', $this->input->post('start'))));
+		$end = date('Y-m-d', strtotime(str_replace('-', '/', $this->input->post('end'))));
+
+
+        $list = $this->KaryawanModel->searchTransaksi(array('key' => $key,'start' => $start,'end' => $end));
+		$data = array();
+        $no = 0;
+        foreach($list->result() as $detail){
+			$no++;
+			$rowColorClass = ($no % 2 == 0) ? 'background-color: #FFFFFF;' : 'background-color: #F2F2F2;';
+			$url = base_url('kasir/detail-transaksi/'.$detail->no_transaksi);
+            $total_bayar = number_format($detail->total_biaya, 0, '.', ',');
+            $diskon = number_format($detail->diskon, 0, '.', ',');
+			$row = array();
+            $row = array(
+				'no' => $no,
+				'color' => $rowColorClass,
+				'url' => $url,
+                'no_transaksi' => $detail->no_transaksi,
+                'cashier' => $detail->cashier,
+                'tanggal_pesanan' => $detail->tanggal_pesanan,
+                'total_biaya' => $total_bayar,
+                'diskon' => $diskon,
+                'metode_pembayaran' => $detail->metode_pembayaran,
+				'status' => $detail->status
+            );
+
+            $data[] = $row;
+		}
+        
+        $output = array(
+	        "data" => $data
+	    );
+        echo json_encode($output);
+
+	}
 
 }

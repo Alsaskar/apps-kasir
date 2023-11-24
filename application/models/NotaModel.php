@@ -51,17 +51,17 @@ class NotaModel extends CI_Model{
         return $query->result();
     }
 
-    public function count_filtered($teknisiId){
-        $this->_get_datatables_query($teknisiId);
+    public function count_filtered(){
+        $this->_get_datatables_query($_SESSION['id_user']);
         $query = $this->db->get();
 
         return $query->num_rows();
     }
 
-    public function count_all($teknisiId){
+    public function count_all(){
         $this->db->select('*');
         $this->db->from($this->table);
-        $this->db->where('teknisiId', $teknisiId);
+        $this->db->where('teknisiId', $_SESSION['id_user']);
 
         return $this->db->count_all_results();
     }
@@ -82,7 +82,6 @@ class NotaModel extends CI_Model{
         $this->db->where('status', $status);
         $this->db->select('id');
         $this->db->from($this->table);
-
         return $this->db->get()->num_rows();
     }
 }
