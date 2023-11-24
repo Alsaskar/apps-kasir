@@ -149,8 +149,8 @@ class Nota extends CI_Controller {
 
 		$output = array(
 	        "draw" => $_POST['draw'],
-	        "recordsTotal" => $this->KaryawanModel->count_all(),
-	        "recordsFiltered" => $this->KaryawanModel->count_filtered(),
+	        "recordsTotal" => $this->NotaModel->count_all(),
+	        "recordsFiltered" => $this->NotaModel->count_filtered(),
 	        "data" => $data,
 	    );
 

@@ -109,7 +109,6 @@ class KaryawanModel extends CI_Model{
             unlink($image_path);
         } 
     }
-    
 
     public function getLastId($table,$field) {
         $this->db->select_max($field);
@@ -123,6 +122,27 @@ class KaryawanModel extends CI_Model{
 
     public function getById($id){
         return $this->db->get_where($this->table, array('userId' => $id))->row();
+    }
+
+    public function searchTransaksi($data) {
+        $this->db->where('userId', $_SESSION['id_user']);
+    
+        // Tambahkan kondisi where untuk rentang tanggal
+        $this->db->where('tanggal_pesanan >=', $data['start']);
+        $this->db->where('tanggal_pesanan <=', $data['end']);
+    
+        // Kondisi like dikelompokkan dengan tanda kurung
+        $this->db->group_start();
+        $this->db->like('no_transaksi', $data['key']);
+        $this->db->or_like('cashier', $data['key']);
+        $this->db->or_like('total_biaya', $data['key']);
+        $this->db->or_like('diskon', $data['key']);
+        $this->db->or_like('metode_pembayaran', $data['key']);
+        $this->db->or_like('status', $data['key']);
+        $this->db->group_end();
+    
+        $query = $this->db->get('transaksi');
+        return $query;
     }
 
 }
