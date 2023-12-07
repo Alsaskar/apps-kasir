@@ -1,17 +1,5 @@
 <?php 
 
-/*
-
-Barang Model
-
-Fungsi :
-- Menampilkan Data Barang
-- Mengedit Data Barang
-- Menghapus Data Barang
-- Menampilkan Profil Barang
-
-*/
-
 class BarangModel extends CI_Model{
     public $table = 'barang';
     
@@ -42,6 +30,7 @@ class BarangModel extends CI_Model{
         // Ambil stok sekarang
         $this->db->select('stok');
         $this->db->where('id', $id);
+        $this->db->where('userId', $_SESSION['id_user']);
         $query = $this->db->get('barang');
         $result = $query->row();
 
@@ -62,6 +51,7 @@ class BarangModel extends CI_Model{
     }
 
     public function getById($id){
+        $this->db->where('userId', $_SESSION['id_user']);
         return $this->db->get_where($this->table, array('id' => $id))->row();
     }
 

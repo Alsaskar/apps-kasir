@@ -59,10 +59,35 @@
           <li class="nav-item">
           <a href="#" class="nav-link">
           <i class="fas fa-sticky-note nav-icon"></i>
+            <p>Managament Nota<i class="fas fa-angle-left right"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="<?= base_url('nota/scan-teknisi') ?>" class="nav-link">
+              <i class="fas fa-solid fa-qrcode nav-icon"></i>
+                <p>Scan Nota</p>
+              </a>
+              <a href="<?= base_url('nota/working-list') ?>" class="nav-link">
+              <i class="fas fa-receipt nav-icon"></i> 
+                <p>Nota yang dikerjakan</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <?php }else if($getKaryawan->status_karyawan == 'customer service'){ ?>
+          
+          <li class="nav-item">
+          <a href="#" class="nav-link">
+          <i class="fas fa-sticky-note nav-icon"></i>
             <p>Managament Nota <i class="fas fa-angle-left right"></i></p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
+              <a href="<?= base_url('nota/scan') ?>" class="nav-link">
+              <i class="fas fa-solid fa-qrcode nav-icon"></i>
+                <p>Scan Nota</p>
+              </a>
               <a href="<?= base_url('nota/add') ?>" class="nav-link">
               <i class="fas fa-plus-square nav-icon"></i>
                 <p>Tambah Nota</p>

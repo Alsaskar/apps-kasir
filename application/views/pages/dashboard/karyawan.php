@@ -58,10 +58,49 @@ if (isset($message)) {
 						</div>
 					</div>
 				</div>
+
+				<?php }else if($getKaryawan->status_karyawan == 'customer service'){ ?>
 				
+					<h3>Hai, <?= $getUser->firstname.' '.$getUser->lastname?></h3>
+				<h6>Anda adalah Customer Service di <?= $getOwner->nama_toko ?></h6><hr/>
+
+				<div class="row">
+					<div class="col-md-4">
+						<div class="card">
+							<div class="card-body">
+								<h3>Service</h3>
+								<div>Total service yang masih diproses</div><hr/>
+								
+								<h2 align="center"><?= $serviceProses ?></h2>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="card">
+							<div class="card-body bg-success">
+								<h3><i class="fas fa-check"></i> Service</h3>
+								<div>Total service yang telah selesai</div><hr/>
+								
+								<h2 align="center"><?= $serviceSelesai ?></h2>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="card">
+							<div class="card-body bg-danger">
+								<h3><i class="fas fa-times"></i> Service</h3>
+								<div>Total service yang dibatalkan</div><hr/>
+								
+								<h2 align="center"><?= $serviceBatal ?></h2>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
 				<?php }else if($getKaryawan->status_karyawan == 'cashier'){ ?>
 					<h3>Hai, <?= $getUser->firstname.' '.$getUser->lastname ?></h3>
-					<h6>Anda adalah Teknisi di <?= $getOwner->nama_toko ?></h6><hr/>
+					<h6>Anda adalah Cashier di <?= $getOwner->nama_toko ?></h6><hr/>
 
 					<div class="row">
 						<div class="col-md-4">
@@ -70,7 +109,7 @@ if (isset($message)) {
 									<h3>Total Transaksi</h3>
 									<div>Total Transaksi yang telah dibuat</div><hr/>
 									
-									<h2 align="center"><?= $totalTransaksi ?></h2>
+									<h2 align="center"><?= $totalTransaksi?></h2>
 								</div>
 							</div>
 						</div>

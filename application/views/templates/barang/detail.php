@@ -1,4 +1,6 @@
 <form method="post" enctype="multipart/form-data" action="<?=base_url('barang/edit-barang');?>">
+<input type="text" class="d-none" value="barang/create/<?=$barang->id?>" name="url">
+<input type="text" class="d-none" value="<?=$barang->id?>" name="id">
 
 <div class="row justify-content-center product-details">
     <div class="col-md-6">
@@ -40,7 +42,7 @@
                     </div>
                     <div class="form-group" style="width:100%;">
                         <label for="deskripsi">Deskripsi:</label>
-                        <textarea name="deskripsi" placeholder="Deskripsi Produk" class="form-control" id="deskripsi" placeholder="" cols="30" rows="4"><?=$barang->deskripsi?></textarea>
+                        <textarea name="deskripsi" placeholder="Deskripsi Produk" class="form-control" id="deskripsi" placeholder="" cols="30" rows="4"><?=str_replace(['<br />','<br>','/r' ,'/n'], '', $barang->deskripsi)?></textarea>
                     </div>
                 </div>
         </div>

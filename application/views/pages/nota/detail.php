@@ -49,15 +49,17 @@ if (isset($message)) {
                             <h5><?= $getOwner->tipe_toko ?></h5>
                             <h5><?= $getOwner->no_hp ?></h5>
                             <h6><?= $getOwner->alamat_toko ?></h6>
+                            <img src="<?= base_url('nota/qrcode/'.$invoice);?>">
+
                         </div>
                     </div>
                 </div>
 
                 <!-- Apabila status nota telah selesai atau batal -->
-                <?php if($getNota->status == 'selesai' || $getNota->status == 'batal'){ ?>
+                <?php if($getNota->status_nota == 'diambil customer' || $getNota->status_nota == 'dibatalkan'){ ?>
                 <div id="ket" class="cetakNota">
                     <hr/><div class="alert alert-warning">
-                        Service ini telah <?= $getNota->status == 'selesai' ? 'selesai' : 'dibatalkan' ?>
+                        Service ini telah <?= $getNota->status_nota == 'selesai' ? 'selesai' : 'dibatalkan' ?>
                     </div>
                 </div>
                 <?php } ?>
@@ -69,24 +71,34 @@ if (isset($message)) {
                         <table class="table table-bordered table-sm">
                             <thead>
                                 <tr align="center">
-                                    <th colspan="3">Data Konsumen</th>
+                                    <th colspan="3">Data Nota</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Nama</td>
+                                    <td>Nama Customer</td>
                                     <td align="center">:</td>
-                                    <td><?= $getNota->namaCustomer ?></td>
+                                    <td><?= $getNota->nama_customer ?></td>
                                 </tr>
                                 <tr>
                                     <td>No WA</td>
                                     <td align="center">:</td>
-                                    <td><?= $getNota->noHp ?></td>
+                                    <td><?= $getNota->no_hp ?></td>
                                 </tr>
                                 <tr>
                                     <td>Alamat</td>
                                     <td align="center">:</td>
                                     <td><?= $getNota->alamat ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Pembayaran</td>
+                                    <td align="center">:</td>
+                                    <td><?= $getNota->status_pembayaran ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td align="center">:</td>
+                                    <td><?= $getNota->status_nota ?></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -103,13 +115,13 @@ if (isset($message)) {
                                 <tr>
                                     <td>Type Item</td>
                                     <td align="center">:</td>
-                                    <td><?= $getNota->tipeHp ?></td>
+                                    <td><?= $getNota->nama_barang ?></td>
                                     <td colspan="2"></td>
                                 </tr>
                                 <tr>
                                     <td>Imei/SN</td>
                                     <td align="center">:</td>
-                                    <td><?= $getNota->imei ?></td>
+                                    <td><?= $getNota->serial_number ?></td>
                                     <td colspan="2"></td>
                                 </tr>
                                 <tr>
@@ -123,18 +135,18 @@ if (isset($message)) {
                                     <td align="center">:</td>
                                     <td><?= $getNota->perbaikan ?></td>
                                     <td><b>Total</b></td>
-                                    <td><?= rupiah($getNota->hargaService) ?></td>
+                                    <td><?= rupiah($getNota->harga_service) ?></td>
                                 </tr>
                                 <tr>
                                     <th colspan="4"><b><center>DP</center></b></th>
-                                    <th><?= rupiah($getNota->uangPanjar) ?></th>
+                                    <th><?= rupiah($getNota->uang_muka) ?></th>
                                 </tr>
                                 <tr>
                                     <th colspan="4"><b><center>Sisa</center></b></th>
                                     <th>
                                         <?php 
                                         
-                                        $sisa = $getNota->hargaService - $getNota->uangPanjar;
+                                        $sisa = $getNota->harga_service - $getNota->uang_muka;
 
                                         echo rupiah($sisa);
                                             
@@ -143,10 +155,18 @@ if (isset($message)) {
                                 </tr>
                             </tbody>
                         </table>
-
+                        <div>
+                            <label for="last-activity">
+                            <a style="cursor: pointer;text-decoration: underline;" class="text-dark" href="<?= base_url('nota/activity/'.$invoice)?>">
+                            Aktivitas Terakhir
+                            </a>
+                            </label>
+							<p><?=$lastHistory->status?></p>
+							<label for="Keterangan">Keterangan</label>
+                            <p><?=$lastHistory->keterangan?></p>
+                        </div>
                         <div id="note">
                             <h6><u>Note</u></h6>
-
                             <div>- Semua perlengkapan & Acc dibawa pulang</div>
                             <div>- Pengambilan Barang harus disertai dengan <span style="color: red;">nota</span></div>
                             <div>- Barang yang sudah dikonfirmasi selesai oleh tim <?= $getOwner->nama_toko ?> Service harap segera di ambil</div>
@@ -189,7 +209,7 @@ if (isset($message)) {
                             </div>
                         </div>
 
-                        <?php if($getNota->status == 'proses'){ ?>
+                        <?php if($getNota->status_nota == 'proses'){ ?>
 
                         <div class="row mt-3">
                             <div class="col-md-4">

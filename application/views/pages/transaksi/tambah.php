@@ -59,17 +59,9 @@ if (isset($message)) {
         }
         .payment-input{
             position:relative;
-            height: 107px; /* Tinggi maksimum 150 piksel */
+            height: 177px; /* Tinggi maksimum 150 piksel */
         }
         
-        .card-payment{
-            position: absolute;
-            width: 500px; /* Tinggi maksimum 150 piksel */
-            right:2px;
-            top:0px;
-            border:2px;
-        }
-
     </style>
 
  <div class="wrapper">
@@ -78,14 +70,13 @@ if (isset($message)) {
     <div class="content-wrapper pb-3">
           <section class="content">
           <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-7">
                 <!-- Bagian Daftar Produk -->
                 <div class="card">
                     <div class="card-header">Daftar Produk</div>
                     <div class="payment-input">
-                        
-                                <div class="col-lg-4 ml-3">
-                                    <div style="width:500px;">
+                                <div class="col-lg-10 ml-3">
+                                    <div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label for="Search">Pencarian:</label>
@@ -96,13 +87,7 @@ if (isset($message)) {
                                                 <input id="Scan" type="text" class="form-control" placeholder="Scan">
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-
-
-
-                                <div class="card-payment">
-                                    <form action="" method="post">
+                                         <form action="" method="post">
                                         <input type="text" id="no-transaksi" class="d-none" name="notransaksi">
                                         <input type="text" value="<?=$getUser->firstname ." ". $getUser->lastname?>" name="cashier" class="d-none">
                                         <div class="row">
@@ -116,7 +101,8 @@ if (isset($message)) {
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="jumlahBayar">Jumlah Bayar:</label>
-                                                <input type="number" class="form-control" name="jumlahBayar" placeholder="Contoh: 20000" id="jumlahBayar">
+                                                <input type="text" class="d-none" name="testing2" id="testing2" placeholder="testing2">
+                                                <input type="text" onkeyup="formatCurrency(this)" class="form-control" name="jumlahBayar" placeholder="Contoh: 20000" id="jumlahBayar">
                                             </div>
                                             <div class="col-md-6">
                                             </div>
@@ -125,8 +111,8 @@ if (isset($message)) {
                                                 <input name="finish" type="submit" class="btn btn-success" value="Selesai">
                                             </div>
                                         </div>
-                                    
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                         </div>
                       
@@ -137,14 +123,12 @@ if (isset($message)) {
                         ?>
                         <?php foreach ($barang->result() as $item): ?>
                                     <?php $index++;?>
-
                                     <div class="d-none">
                                         <input type="text" value="<?=$item->nama_barang?>" id="namaBarang-<?=$index?>">
                                         <input type="text" value="<?=$item->harga?>" id="harga-<?=$index?>">
-                                        <input type="text" value="<?=$item->id?>" id="barangId-<?=$index?>">
+                                        <input type="text" value="<?=$item->no?>" id="barangId-<?=$index?>">
                                     </div>
-
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="card px-2 py-1">
                                             <div class="product-card">
                                                 <img class="product-image" style="height:250px;" src="<?=base_url('assets/images/barang/'.$item->gambar)?>" alt="<?=$item->nama_barang?>">
@@ -161,17 +145,15 @@ if (isset($message)) {
                                                     </div>
                                                 </div>
                                                 <div class="row justify-content-center">
-                                                    <div class="col-md-4 mt-2 mb-2">
+                                                    <div class="col-md-8 mt-2 mb-2">
                                                         <button onclick="button(<?=$index?>);" id="button-<?=$index?>" class="btn btn-primary btn-block mt-1">Tambah</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                         <?php endforeach; ?>
                         </div>
-
                         <!-- Isi dengan daftar produk -->
                     </div>
                 </div>
@@ -179,10 +161,10 @@ if (isset($message)) {
                 <!-- Bagian Struk Pesanan -->
                     <div class="struk-container">
                             <div class="logo">
-                                <img src="<?=base_url('assets/images/logo-toko/'.$getOwner->photo_toko);?>" alt="Logo Toko">
+                                <img src="<?=base_url('assets/images/logo/sutanstore.png');?>" alt="Logo Toko">
                             </div>
                             <div class="toko-name">
-                                <?=$getOwner->nama_toko?>
+                                Nama Toko Anda
                             </div>
                             <div class="follow-text">
                                 Follow us on Instagram or Facebook: @sutan.service
@@ -256,7 +238,7 @@ if (isset($message)) {
                             <div class="divider"></div>
                             <div class="detail">
                                 <div class="detail-item">
-                                    Rekening: <?=$getOwner->bankName?> <?=$getOwner->bankAccountNumber?> <?=$getOwner->bankAccountName?>
+                                    Rekening: BCA 0262026190 Irtan Sutan Montolalu <br>
                                 </div>
                             </div>
                         </div>
@@ -264,6 +246,7 @@ if (isset($message)) {
             </section>
             </div>
         </div>
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
@@ -333,13 +316,12 @@ if (isset($message)) {
                 dataType: 'json',
                 data: {},
                 success: function(response) {
-                    // alert("berhasil Data yang diambil : "+response.data)
                     $("#list-item").empty();
                     $.each(response.data, function(index, item) {
                         index++;
                         setTimeout(function () {
                         search.value = "";
-                        }, 1000);
+                        }, 2000);
                         // Tambahkan baris HTML untuk setiap elemen
                         $("#list-item").append(
                             `
@@ -366,7 +348,7 @@ if (isset($message)) {
                                             </div>
                                         </div>
                                         <div class="row justify-content-center">
-                                            <div class="col-md-4 mt-2 mb-2">
+                                            <div class="mt-2 mb-2">
                                                 <button onclick="button(${index});" id="button-${index}" class="btn btn-primary btn-block mt-1">Tambah</button>
                                             </div>
                                         </div>
@@ -391,10 +373,43 @@ if (isset($message)) {
             }
         }
 
+        function formatCurrency(input) {
+        var angka2 = input.value;
+        var cleaned = angka2.replace(/[^\d]/g, '');
+
+        // Parse sebagai integer
+        var integerValue = parseInt(cleaned, 10);
+
+        $("#testing2").val(integerValue);
+
+        var angka = $("#testing2").val();
+
+        var angkaStr = angka.toString();
+
+        // Pisahkan angka menjadi bagian desimal dan bagian angka
+        var parts = angkaStr.split('.');
+        var angkaBagian = parts[0];
+
+        // Pisahkan bagian angka menjadi grup tiga digit
+        var reversed = angkaBagian.split('').reverse().join('');
+        var groups = reversed.match(/\d{1,3}/g);
+        var formatted = groups.join('.').split('').reverse().join('');
+
+        // Tambahkan koma untuk bagian desimal jika ada
+        var desimalBagian = parts[1] ? ',' + parts[1] : '';
+
+        // Gabungkan bagian angka dan desimal
+        var hasilAkhir = formatted + desimalBagian;
+
+        // Tampilkan nilai yang telah diformat
+        $("#jumlahBayar").val(hasilAkhir);
+
+        }
+
 
         function SaveStruct(){
             var jenisPembayaran = document.getElementById("jenisPembayaran").value;
-            var uangPelanggan = document.getElementById("jumlahBayar").value;
+            var uangPelanggan = document.getElementById("testing2").value;
             $.ajax({
                 url: "<?php echo base_url('Kasir/saveTransaction'); ?>",
                 type: "POST",

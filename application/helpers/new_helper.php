@@ -1,4 +1,5 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+require('qrcode/qrlib.php');
 
 function slug_seo($text){
     $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
@@ -32,6 +33,10 @@ function formatTanggal($date){
 function rupiah($angka){
     $hasil_rupiah = "Rp. " . number_format($angka,0,',','.');
     return $hasil_rupiah;
+}
+
+function qrCode($text){
+    QRcode::png($text,false,QR_ECLEVEL_H,5,10);
 }
 
 ?>

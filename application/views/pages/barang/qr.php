@@ -48,9 +48,7 @@ if (isset($message)) {
                                 </div>
                             </div>
                         </div>
-
                         <?=$display?>
-
                 </div>
           </div>
       </section>

@@ -201,7 +201,7 @@ class Barang extends CI_Controller {
                     'userId' => $_SESSION['id_user'],
                     'nama_barang' => $namaBarang,
                     'harga' => $harga,
-                    'id' => isset($_SESSION['barcode']) ? $_SESSION['barcode'] : null,
+                'id' => $this->input->post('id'),
                     'stok' => $stok,
                     'gambar' => $thumbnail['file_name'],
                     'deskripsi' => nl2br($deskripsi)
@@ -211,7 +211,7 @@ class Barang extends CI_Controller {
         
                 $this->session->set_flashdata('msg_sweetalert', '<script>Swal.fire({
                     title: "Berhasil",
-                    text: "Data Barang diTambahkan",
+                    text: "Data Barang di Update",
                     icon: "success",})</script>'
                 );
             } else {
@@ -232,7 +232,7 @@ class Barang extends CI_Controller {
                 'userId' => $_SESSION['id_user'],
                 'nama_barang' => $namaBarang,
                 'harga' => $harga,
-                'id' => isset($_SESSION['barcode']) ? $_SESSION['barcode'] : null,
+                'id' => $this->input->post('id'),
                 'stok' => $stok,
                 'deskripsi' => nl2br($deskripsi)
             );
@@ -241,11 +241,11 @@ class Barang extends CI_Controller {
     
             $this->session->set_flashdata('msg_sweetalert', '<script>Swal.fire({
                 title: "Berhasil",
-                text: "Data Barang diTambahkan",
+                text: "Data Barang Berhasil diUpdate",
                 icon: "success",})</script>'
             );
         }
-        redirect('barang/add');
+        redirect($this->input->post('url'));
 
     }
 

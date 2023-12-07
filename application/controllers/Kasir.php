@@ -50,7 +50,8 @@ class Kasir extends CI_Controller {
                 );
                 $dataTransaksi = array(
                     'userId' => $_SESSION['id_user'],
-                    'status' => 'draft'
+                    'status' => 'draft',
+                    'ownerId' => $dataKaryawan->ownerId
                 );
                
                 $this->KasirModel->addcache($dataCache,$dataTransaksi);
@@ -83,7 +84,7 @@ class Kasir extends CI_Controller {
             $validasi = $this->KasirModel->validasiJumlahBarang();
             
             if($validasi == true){
-               $jumlahBayar = $this->input->post('jumlahBayar');
+               $jumlahBayar = $this->input->post('testing2');
                if (!empty($jumlahBayar)) {
                     $konfirmasiHarga = $this->KasirModel->konfirmasi($jumlahBayar);
                     if($konfirmasiHarga == true){
@@ -132,7 +133,6 @@ class Kasir extends CI_Controller {
                 );
                 redirect('/kasir/add');
             }
-            
         }
     }
 
@@ -163,7 +163,8 @@ class Kasir extends CI_Controller {
     }
 
     public function scan(){
-        $dataBarang = $this->BarangModel->getById($_POST['kode']);
+		$dataKaryawan = $this->KaryawanModel->getById($_SESSION['id_user']);
+        $dataBarang = $this->KasirModel->ScanBarang($_POST['kode'],$dataKaryawan->ownerId);
         if($dataBarang){
           if($dataBarang->stok > 0){
             $dataCache = array(
@@ -171,11 +172,12 @@ class Kasir extends CI_Controller {
                 'nama_barang' => $dataBarang->nama_barang,
                 'jumlah_barang' => 1,
                 'harga_satuan' => $dataBarang->harga,
-                'barangId' => $dataBarang->id
+                'barangId' => $dataBarang->no
             );
             $dataTransaksi = array(
                 'userId' => $_SESSION['id_user'],
-                'status' => 'draft'
+                'status' => 'draft',
+                'ownerId' => $dataKaryawan->ownerId
             );
             $this->KasirModel->addcache($dataCache,$dataTransaksi);
           }
@@ -183,7 +185,8 @@ class Kasir extends CI_Controller {
     }
 
 	public function execute_action() {
-		$dataCache = array(
+		$dataKaryawan = $this->KaryawanModel->getById($_SESSION['id_user']);
+        $dataCache = array(
 			'userId' => $_SESSION['id_user'],
 			'nama_barang' => $this->input->post('namaBarang'),
 			'jumlah_barang' => $this->input->post('jumlah'),
@@ -193,13 +196,15 @@ class Kasir extends CI_Controller {
 
 		$dataTransaksi = array(
             'userId' => $_SESSION['id_user'],
-            'status' => 'draft'
+            'status' => 'draft',
+            'ownerId' => $dataKaryawan->ownerId
         );
 		
         $this->KasirModel->addcache($dataCache,$dataTransaksi);
 	}
 
     public function cache_transaksi(){
+
 		$list = $this->KasirModel->getcache();
 		$data = array();
         $totalBiaya = 0;
@@ -278,7 +283,6 @@ class Kasir extends CI_Controller {
 
     public function searchItem($id){
         $key = $id;
-
         $dataKaryawan = $this->KaryawanModel->getById($_SESSION['id_user']);
         $list = $this->KasirModel->searchBarang($key,$dataKaryawan->ownerId);
 
@@ -297,7 +301,7 @@ class Kasir extends CI_Controller {
                 'stok' => $detail->stok,
                 'harga' => $harga,
                 'hargasistem' => $detail->harga,
-                'id' => $detail->id,
+                'id' => $detail->no,
                 'deskripsi' => $detail->deskripsi
             );
 

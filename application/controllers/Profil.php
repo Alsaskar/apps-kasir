@@ -59,7 +59,7 @@ class Profil extends CI_Controller {
 		$this->load->view('templates/dashboard/head', $data);
 		$this->load->view('templates/dashboard/navbar', $data);
 
-		$data['sidebar'] = $this->load->view('templates/dashboard/sidebarOwner', $data, true);
+		$data['sidebar'] = $this->load->view('templates/dashboard/sidebarKaryawan', $data, true);
 		$this->load->view('pages/karyawan/profilTeknisi', $data);
 
 		$this->load->view('templates/dashboard/footer');

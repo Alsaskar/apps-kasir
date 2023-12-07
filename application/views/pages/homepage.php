@@ -48,7 +48,6 @@
         padding-bottom: 40px;
       }
 
-      
     </style>
   </head>
 <body>

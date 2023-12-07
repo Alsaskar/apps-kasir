@@ -104,12 +104,13 @@ class KasirModel extends CI_Model{
         }
     
         // Cek apakah barang ID sudah ada di tabel cache_transaksi
-        $existingCache = $this->db->get_where('cache_transaksi', array('barangId' => $dataCache['barangId']))->row();
+        $existingCache = $this->db->get_where('cache_transaksi', array('barangId' => $dataCache['barangId'],'userId' => $_SESSION['id_user']))->row();
     
         if ($existingCache) {
             // Jika sudah ada, tambahkan jumlah_barang dari nilai sebelumnya
             $dataCache['jumlah_barang'] += $existingCache->jumlah_barang;
             $this->db->where('barangId', $dataCache['barangId']);
+            $this->db->where('userId', $_SESSION['id_user']);
             $this->db->update('cache_transaksi', $dataCache);
         } else {
             // Jika belum ada, lakukan proses insert
@@ -119,9 +120,14 @@ class KasirModel extends CI_Model{
     
     public function getBarang($id) {
         $this->db->where('userId',$id);
-        $this->db->limit(3);
+        $this->db->limit(4);
         $query = $this->db->get('barang');
         return $query;
+    }
+
+    public function scanBarang($id,$owner){
+        $this->db->where('userId', $owner);
+        return $this->db->get_where('barang', array('id' => $id))->row();
     }
     
     public function getDate($type){
@@ -199,11 +205,11 @@ class KasirModel extends CI_Model{
         $barangJumlah = array();
 
         // Ambil data jumlah barang dari tabel barang
-        $barang = $this->db->select('id, stok')->get('barang')->result_array();
+        $barang = $this->db->select('no, stok')->get('barang')->result_array();
 
         // Ubah format data barang untuk kemudahan pencarian
         foreach ($barang as $row) {
-            $barangJumlah[$row['id']] = $row['stok'];
+            $barangJumlah[$row['no']] = $row['stok'];
         }
 
         // Periksa apakah jumlah barang dari cache_transaksi lebih besar atau sama dengan jumlah barang dari tabel barang
@@ -245,6 +251,7 @@ class KasirModel extends CI_Model{
         $this->db->or_like('deskripsi', $key);
         $this->db->or_like('stok', $key);
         $this->db->or_like('id', $key);
+        $this->db->or_like('no', $key);
         $this->db->or_like('harga', $key);
         $this->db->where('userId', $kode_owner);
         $query = $this->db->get('barang');
@@ -313,10 +320,9 @@ class KasirModel extends CI_Model{
         return $query->num_rows();
     }
 
-    public function countTransactionByDate(){
-        $currentDate = date('Y-m-d');
+    public function countTransactionByDate($date){
         $this->db->where('userId', $_SESSION['id_user']);
-        $this->db->where('tanggal_pesanan', $currentDate);
+        $this->db->where('tanggal_pesanan', $date);
         $query = $this->db->get('transaksi');
         // Kembalikan jumlah baris
         return $query->num_rows();
