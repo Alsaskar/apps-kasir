@@ -21,6 +21,7 @@ class Kasir extends CI_Controller {
         $data['barang'] = $this->KasirModel->getBarang($dataKaryawan->ownerId);
         $data['getOwner'] = $this->OwnerModel->getById($dataKaryawan->ownerId);
         $data['cache'] = $this->KasirModel->getcache();
+        
 		// jika bukan admin yg login, maka tdk bisa kesini
 		if ($data['getUser']->role != 'karyawan')
 			redirect('dashboard');

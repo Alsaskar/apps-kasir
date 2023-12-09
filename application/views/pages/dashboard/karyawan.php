@@ -37,6 +37,7 @@ if (isset($message)) {
 							</div>
 						</div>
 					</div>
+					
 					<div class="col-md-4">
 						<div class="card">
 							<div class="card-body bg-success">
@@ -47,6 +48,7 @@ if (isset($message)) {
 							</div>
 						</div>
 					</div>
+
 					<div class="col-md-4">
 						<div class="card">
 							<div class="card-body bg-danger">
