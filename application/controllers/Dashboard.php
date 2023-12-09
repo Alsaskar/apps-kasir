@@ -13,6 +13,15 @@ class Dashboard extends CI_Controller {
 		}
 	}
 
+	public function working(){
+		$this->load->view('templates/working');
+	}
+
+	public function testing(){
+		$data['title'] = "Dashboard BaDag";
+		$this->load->view('templates/testing', $data);
+	}
+
 	public function index(){
         $_SESSION['index1'] = 1;
 		$data['title'] = "Dashboard BaDag";
@@ -33,22 +42,38 @@ class Dashboard extends CI_Controller {
 			$data['getOwner'] = $this->OwnerModel->getById($data['getKaryawan']->ownerId);
 
 			// status service
-			$data['serviceProses'] = $this->NotaModel->countServiceByStatus('proses', $data['getKaryawan']->id);
-			$data['serviceBatal'] = $this->NotaModel->countServiceByStatus('batal', $data['getKaryawan']->id);
-			$data['serviceSelesai'] = $this->NotaModel->countServiceByStatus('selesai', $data['getKaryawan']->id);
+			$data['serviceProses'] = $this->NotaModel->countServiceByStatus('Sedang diKerjakan', $data['getKaryawan']->userId,$data['getKaryawan']->status_karyawan);
+			$data['serviceSelesai'] = $this->NotaModel->countServiceByStatus('Selesai', $data['getKaryawan']->userId,$data['getKaryawan']->status_karyawan);
+			$data['serviceBatal'] = $this->NotaModel->countServiceByStatus('dibatalkan', $data['getKaryawan']->userId,$data['getKaryawan']->status_karyawan);
 
 			// data transaksi
 			$data['totalTransaksi'] = $this->KasirModel->countAllTransasction();
-			$data['totalTransaksiToday'] = $this->KasirModel->countTransactionByDate();
+			date_default_timezone_set('Asia/Jakarta'); 
+			$data['tanggal'] = date('Y-m-d');
+			$data['totalTransaksiToday'] = $this->KasirModel->countTransactionByDate($data['tanggal']);
 			$data['list'] = $this->KasirModel->showTransaction();
 			$data['date1'] = $this->KasirModel->getDate('min');
 			$data['date2'] = $this->KasirModel->getDate('max');
-			$data['tanggal'] = date('Y-m-d');
 			$data['sidebar'] = $this->load->view('templates/dashboard/sidebarKaryawan', $data, true);
 			$this->load->view('pages/dashboard/karyawan', $data);
 
 		}else if ($data['getUser']->role == 'owner') { // jika owner
+			$data['totalBarang'] = $this->OwnerModel->totalData('barang');
+			$data['totalKaryawan'] = $this->OwnerModel->totalData('karyawan');
+			$data['totalTransaksi'] = $this->OwnerModel->totalData('transaksi');
+			$data['totalNota'] = $this->OwnerModel->totalData('nota_teknisi');
+			$data['transaksiMingguan'] = $this->OwnerModel->getDataTransaction();
+			$index = 0;
 
+			if($data['transaksiMingguan'] == false){
+				$data['transaksiNone'] = "Anda Belum Memiliki Transaksi";
+			}else{
+				foreach ($data['transaksiMingguan']->result() as $transaksi) {
+					$index++;
+					$data['day'.$index] = $this->OwnerModel->CountTransactionByDate($transaksi->tanggal_pesanan);
+				}
+			}
+			
 			$data['sidebar'] = $this->load->view('templates/dashboard/sidebarOwner', $data, true);
 			$this->load->view('pages/dashboard/owner', $data);
 

@@ -76,6 +76,20 @@
           </ul>
         </li>
 
+        <li class="nav-item">
+          <a href="<?= base_url('owner/list-transaksi') ?>" class="nav-link">
+          <i class="fas fa-cash-register nav-icon"></i>
+            <p>Transaksi</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="<?= base_url('/owner/list-nota') ?>" class="nav-link">
+            <i class="fas fa-receipt nav-icon"></i>
+            <p>Nota</p>
+          </a>
+        </li>
+
         <li class="nav-header">MORE</li>
 
         <li class="nav-item">

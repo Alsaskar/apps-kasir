@@ -32,16 +32,20 @@ if (isset($message)) {
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
-												<label for="tglPengambilan">Tanggal Pengambilan</label>
-												<input type="date" class="form-control" name="tglPengambilan" id="tglPengambilan" value="<?= set_value('tglPengambilan') ?>">
-												<?php echo form_error('tglPengambilan', '<small class="text-muted"><font color="red">', '</font></small>'); ?>
+												<label for="namaCustomer">Nama Customer</label>
+												<input type="text" class="form-control" name="namaCustomer" id="namaCustomer" value="<?= set_value('namaCustomer') ?>" placeholder="Masukkan Nama Customer">
+												<?php echo form_error('namaCustomer', '<small class="text-muted"><font color="red">', '</font></small>'); ?>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
-												<label for="namaCustomer">Nama Customer</label>
-												<input type="text" class="form-control" name="namaCustomer" id="namaCustomer" value="<?= set_value('namaCustomer') ?>" placeholder="Masukkan Nama Customer">
-												<?php echo form_error('namaCustomer', '<small class="text-muted"><font color="red">', '</font></small>'); ?>
+												<label for="statusPembayaran">Status</label>
+												<select class="form-control" name="statusPembayaran" id="statusPembayaran">
+													<option value="belum bayar">belum bayar</option>
+													<option value="uang muka">uang muka</option>
+													<option value="lunas">lunas</option>
+													<?php echo form_error('statusPembayaran', '<small class="text-muted"><font color="red">', '</font></small>'); ?>
+												</select>
 											</div>
 										</div>
 									</div>
@@ -64,9 +68,9 @@ if (isset($message)) {
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
-												<label for="tipeHp">Tipe HP</label>
-												<input type="text" class="form-control" name="tipeHp" id="tipeHp" value="<?= set_value('tipeHp') ?>" placeholder="Masukkan Tipe HP">
-												<?php echo form_error('tipeHp', '<small class="text-muted"><font color="red">', '</font></small>'); ?>
+												<label for="namaBarang">Nama Barang</label>
+												<input type="text" class="form-control" name="namaBarang" id="namaBarang" value="<?= set_value('namaBarang') ?>" placeholder="Masukkan Tipe HP">
+												<?php echo form_error('namaBarang', '<small class="text-muted"><font color="red">', '</font></small>'); ?>
 											</div>
 										</div>
 										<div class="col-md-6">
@@ -80,9 +84,9 @@ if (isset($message)) {
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
-												<label for="keterangan">Keterangan</label>
-												<input type="text" class="form-control" id="keterangan" name="keterangan"  value="<?= set_value('keterangan') ?>" placeholder="Masukkan Keterangan">
-												<?php echo form_error('keterangan', '<small class="text-muted"><font color="red">', '</font></small>'); ?>
+												<label for="kerusakan">kerusakan</label>
+												<input type="text" class="form-control" id="kerusakan" name="kerusakan"  value="<?= set_value('kerusakan') ?>" placeholder="Masukkan kerusakan">
+												<?php echo form_error('kerusakan', '<small class="text-muted"><font color="red">', '</font></small>'); ?>
 											</div>
 										</div>
 										<div class="col-md-6">
@@ -110,9 +114,9 @@ if (isset($message)) {
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="kerusakkan">Kerusakkan</label>
-										<textarea name="kerusakkan" id="kerusakkan" class="form-control" rows="3" placeholder="Masukkan Kerusakkan"><?= set_value('kerusakkan') ?></textarea>
-										<?php echo form_error('kerusakkan', '<small class="text-muted"><font color="red">', '</font></small>'); ?>
+										<label for="keterangan">Keterangan</label>
+										<textarea name="keterangan" id="keterangan" class="form-control" rows="3" placeholder="Masukkan keterangan Nota Service"><?= set_value('keterangan') ?></textarea>
+										<?php echo form_error('keterangan', '<small class="text-muted"><font color="red">', '</font></small>'); ?>
 									</div><hr/>
 									<div class="row">
 										<div class="col-md-3">

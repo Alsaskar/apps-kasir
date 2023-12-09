@@ -29,7 +29,7 @@ if (isset($message)) {
 
                             <?php foreach ($barang->result() as $item): ?>
                             
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 
                                 <div class="card mb-4">
                                     <img src="<?php echo base_url('assets/images/barang/'.$item->gambar); ?>" class="card-img-top" style="height:250px;" alt="<?php echo $item->nama_barang; ?>">

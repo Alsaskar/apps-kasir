@@ -75,6 +75,10 @@ if (isset($message)) {
                                     <label class="form-check-label" for="kasir">Kasir</label>
                                 </div>
                                 <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="jabatan" id="customer service" value="customer service">
+                                    <label class="form-check-label" for="customer service">Customer Service</label>
+                                </div>
+                                <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="jabatan" id="teknisi" value="teknisi">
                                     <label class="form-check-label" for="teknisi">Teknisi</label>
                                 </div>

@@ -47,9 +47,7 @@ if (isset($message)) {
                       <tbody id="showdata" class="text-center"></tbody>
                     </table>
                   </div>
-                  
           </div>
-
 	    	</div>
 	    </section>
 	</div>
