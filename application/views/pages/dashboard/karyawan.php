@@ -188,7 +188,7 @@ if (isset($message)) {
                                             <td>Rp.<?=number_format($item->diskon, 0, '.', ',');?></td>
                                             <td><?=$item->metode_pembayaran?></td>
                                             <td><?=$item->status?></td>
-											<td><a href="<?php base_url('kasir/detail-transaksi/'.$item->no_transaksi);?>" class='btn btn-primary btn-sm'>Detail</a></td>
+											<td><a href="<?php echo base_url('kasir/detail-transaksi/'.$item->no_transaksi);?>" class='btn btn-primary btn-sm'>Detail</a></td>
                                         </tr>   
                                     <?php endforeach; ?>
 								</tbody>
