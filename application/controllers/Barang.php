@@ -17,6 +17,7 @@ class Barang extends CI_Controller {
         $data['title'] = "Daftar Barang";
 		$data['getUser'] = $this->AuthModel->getDataLoggedIn($_SESSION['id_user']);
         $data['barang'] = $this->BarangModel->getBarang($_SESSION['id_user']);
+
 		// jika bukan admin yg login, maka tdk bisa kesini
 		if ($data['getUser']->role != 'owner')
 			redirect('dashboard');
@@ -101,6 +102,7 @@ class Barang extends CI_Controller {
         if (!isset($_SESSION['produk_counter'])) {
             $_SESSION['produk_counter'] = array();
         }
+        
         // Mengecek apakah produkId sudah ada dalam array
         if (isset($_SESSION['produk_counter'][$produkId])) {
             // Produk telah diperiksa sebanyak dua kali
@@ -245,7 +247,8 @@ class Barang extends CI_Controller {
                 icon: "success",})</script>'
             );
         }
-        redirect($this->input->post('url'));
+
+        redirect('barang/daftar-barang');
 
     }
 
