@@ -118,4 +118,5 @@ if (isset($message)) {
 
         reader.readAsDataURL(file);
     }
+
 </script>

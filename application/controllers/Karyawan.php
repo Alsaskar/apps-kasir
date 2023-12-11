@@ -97,7 +97,6 @@ class Karyawan extends CI_Controller {
 			'required' => 'Tidak boleh kosong',
 		));
 
-
 		if($this->form_validation->run()){
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
@@ -255,7 +254,7 @@ class Karyawan extends CI_Controller {
 		$dataKaryawan = $this->KaryawanModel->getById($id);
 		$this->KaryawanModel->delete_image($dataKaryawan->photo_karyawan);
 		$this->KaryawanModel->deleteData($id);
-		$this->UserModel->deleteData($id);
+		$this->UserModel->deleteData($id);-
 		redirect('karyawan/list');
 	}
 

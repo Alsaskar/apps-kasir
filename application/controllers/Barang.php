@@ -46,19 +46,23 @@ class Barang extends CI_Controller {
 
 		$this->load->view('templates/dashboard/footer');
 
-        if(isset($_POST['checkProduct'])){
+        $this->form_validation->set_rules('barcodeInput', '', 'required', array(
+            'required' => 'Tidak boleh kosong',
+        ));
+
+        if($this->form_validation->run()){
+
             $kode = $this->input->post('barcodeInput');
             if (strpos($kode, '(') !== false || strpos($kode, ')') !== false) {
-                redirect('barang/add');
+                redirect('barang/create');
             }
 		    $_SESSION['barcode'] = $kode;
             $isRegistered = $this->BarangModel->isIdRegistered($kode);
             if ($isRegistered) {
-                $this->cekDanJalankanAksi($kode);
                 $data['barang'] = $this->BarangModel->getbyId($kode);
 		        $data['display'] = $this->load->view('templates/barang/detail', $data, true);
             } else {
-                $data['display'] = $this->load->view('templates/barang/add', $data, true);
+                redirect('barang/add-proses/'.$kode);
             }
         }
 		$this->load->view('pages/barang/qr', $data);
@@ -80,7 +84,12 @@ class Barang extends CI_Controller {
 
 		$this->load->view('templates/dashboard/footer');
 
-        if(isset($_POST['checkProduct'])){
+        $this->form_validation->set_rules('barcodeInput', '', 'required', array(
+            'required' => 'Tidak boleh kosong',
+        ));
+
+        if($this->form_validation->run()){
+
             $kode = $this->input->post('barcodeInput');
             if (strpos($kode, '(') !== false || strpos($kode, ')') !== false) {
                 redirect('barang/create');
@@ -91,10 +100,94 @@ class Barang extends CI_Controller {
                 $data['barang'] = $this->BarangModel->getbyId($kode);
 		        $data['display'] = $this->load->view('templates/barang/detail', $data, true);
             } else {
-                $data['display'] = $this->load->view('templates/barang/add', $data, true);
+                redirect('barang/add-proses/'.$kode);
             }
         }
 		$this->load->view('pages/barang/qr', $data);
+    }
+
+    public function addProses($id){
+
+        $data['title'] = "Tambah Barang Baru";
+		$data['getUser'] = $this->AuthModel->getDataLoggedIn($_SESSION['id_user']);
+        $data['barang'] = $this->BarangModel->getBarang($_SESSION['id_user']);
+
+        if ($data['getUser']->role != 'owner')
+			redirect('dashboard');
+
+        $this->form_validation->set_rules('barCode', '', 'required', array(
+            'required' => 'Tidak boleh kosong',
+        ));
+        $this->form_validation->set_rules('namaBarang', '', 'required', array(
+            'required' => 'Tidak boleh kosong',
+        ));
+        $this->form_validation->set_rules('harga', '', 'required', array(
+            'required' => 'Tidak boleh kosong',
+            'is_unique' => 'Tidak boleh kosong',
+        ));
+        $this->form_validation->set_rules('stok', '', 'required', array(
+            'required' => 'Tidak boleh kosong',
+        ));
+        $this->form_validation->set_rules('deskripsi', '', 'required', array(
+            'required' => 'Tidak boleh kosong',
+        ));
+        $this->form_validation->set_rules('customFile', '', 'callback_checkThumbnail');
+
+        if($this->form_validation->run()){
+
+            $this->session->set_flashdata('msg_sweetalert', '<script>Swal.fire({
+                title: "Berhasil",
+                text: "Data Barang diTambahkan",
+                icon: "success",})</script>'
+            );
+
+            $config['upload_path']   = 'assets/images/barang/';
+            $config['allowed_types'] = 'jpg|png|jpeg';
+            $config['max_size']      = 3000000; // 3mb
+            $config['file_name']     = time() . '_' . rand();
+            $this->load->library('upload', $config);
+         
+            $this->upload->do_upload('customFile');
+            $thumbnail = $this->upload->data();
+    
+            $namaBarang = $this->input->post('namaBarang');      
+            $harga = $this->input->post('harga');
+            $stok = $this->input->post('stok');
+            $deskripsi = $this->input->post('deskripsi');
+    
+            $dataBarang = array(
+                'userId' => $_SESSION['id_user'],
+                'nama_barang' => $namaBarang,
+                'harga' => $harga,
+                'id' => isset($_SESSION['barcode']) ? $_SESSION['barcode'] : null,
+                'stok' => $stok,
+                'gambar' => $thumbnail['file_name'],
+                'deskripsi' => nl2br($deskripsi)
+            );
+    
+            $this->BarangModel->addBarang($dataBarang);
+            $this->session->set_flashdata('msg_sweetalert', '<script>Swal.fire({
+                title: "Berhasil",
+                text: "Data Barang diTambahkan",
+                icon: "success",})</script>'
+            );
+            
+            redirect('barang/create');
+        }else{
+            $this->load->view('templates/dashboard/head', $data);
+            $this->load->view('templates/dashboard/navbar', $data);
+    
+    
+            $data['sidebar'] = $this->load->view('templates/dashboard/sidebarOwner', $data, true);
+            $this->load->view('pages/barang/add', $data);
+    
+            $this->load->view('templates/dashboard/footer');
+        }
+    }
+
+    public function prosesUpdate($id){
+        redirect('dashboard');
+
     }
 
     public function cekDanJalankanAksi($produkId) {
@@ -134,48 +227,27 @@ class Barang extends CI_Controller {
 		$this->load->view('templates/dashboard/footer');
     }
 
-    public function tambah(){
-        $config['upload_path']   = 'assets/images/barang/';
-        $config['allowed_types'] = 'jpg|png|jpeg';
-        $config['max_size']      = 3000000; // 3mb
-        $config['file_name']     = time() . '_' . rand(); // random filename
-        $this->load->library('upload', $config);
-    
-        if ($this->upload->do_upload('customFile')) {
-            $thumbnail = $this->upload->data();
-    
-            $namaBarang = $this->input->post('namaBarang');      
-            $harga = $this->input->post('harga');
-            $stok = $this->input->post('stok');
-            $deskripsi = $this->input->post('deskripsi');
-    
-            $dataBarang = array(
-                'userId' => $_SESSION['id_user'],
-                'nama_barang' => $namaBarang,
-                'harga' => $harga,
-                'id' => isset($_SESSION['barcode']) ? $_SESSION['barcode'] : null,
-                'stok' => $stok,
-                'gambar' => $thumbnail['file_name'],
-                'deskripsi' => nl2br($deskripsi)
-            );
-    
-            $this->BarangModel->addBarang($dataBarang);
-            $this->session->set_flashdata('msg_sweetalert', '<script>Swal.fire({
-                title: "Berhasil",
-                text: "Data Barang diTambahkan",
-                icon: "success",})</script>'
-            );
-        } else {
-            // Gagal unggah, berikan pesan kesalahan
-            $error = $this->upload->display_errors();
-            $this->session->set_flashdata('msg_sweetalert', '<script>Swal.fire({
-                title: "Gagal",
-                text: "Error: ' . $error . '",
-                icon: "error",})</script>'
-            );
+    public function checkThumbnail($str){
+        $allowed_mime_type_arr = array('image/jpeg', 'image/png');
+        $mime = get_mime_by_extension($_FILES['customFile']['name']);
+        $maxsize = 3000000; // 3 mb
+ 
+        if (isset($_FILES['customFile']['name']) && $_FILES['customFile']['name'] != "") {
+            if (in_array($mime, $allowed_mime_type_arr)) {
+                if ($_FILES['customFile']['size'] >= $maxsize) {
+                    $this->form_validation->set_message('checkThumbnail', 'Terlalu besar. Maximal 3 MB');
+                    return false;
+                }else{
+                    return true;
+                }
+            }else{
+                $this->form_validation->set_message('checkThumbnail', 'Harus berupa jpg atau png');
+                return false;
+            }
+        }else{
+            $this->form_validation->set_message('checkThumbnail', 'Tidak boleh kosong');
+            return false;
         }
-    
-        redirect('barang/add');
     }
 
     public function edit(){
