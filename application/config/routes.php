@@ -28,10 +28,10 @@ $route['karyawan/searchTransaksi'] = 'Karyawan/searchTransaksi';
 $route['barang/daftar-barang'] = 'Barang';
 $route['barang/add'] = 'Barang/add';
 $route['barang/create'] = 'Barang/create';
-$route['barang/tambah-barang'] = 'Barang/tambah';
 $route['barang/edit-barang'] = 'Barang/edit';
 $route['barang/detail/(:num)'] = 'Barang/detail/$1';
 $route['barang/search/(:any)'] = 'Barang/searchItem/$1';
+$route['barang/add-proses/(:any)'] = 'Barang/addProses/$1';
 
 //owner
 $route['owner/list'] = 'Owner/list';

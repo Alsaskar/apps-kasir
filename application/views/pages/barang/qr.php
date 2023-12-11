@@ -41,6 +41,7 @@ if (isset($message)) {
                                                 <div class="form-group">
                                                     <label for="barcodeInput">Barcode ID:</label>
                                                     <input type="text" class="form-control" id="barcodeInput" name="barcodeInput" placeholder="Masukkan Barcode ID">
+                                                    <?php echo form_error('barcodeInput', '<small class="text-muted"><font color="red">', '</font></small>'); ?>
                                                 </div>
                                                 <button type="submit" name="checkProduct" class="btn btn-primary btn-block">Cek Produk</button>
                                            </form>
